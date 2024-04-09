@@ -395,7 +395,7 @@ if __name__ == '__main__':
     if args.fix_angle != -1:
         click.secho(f'INFO: Using MOON RADIUS: {moon_mask_r} (sun_radius + moon_radius_mod)')
     # 7184
-    canvas_size = (sun_mask_r + moon_mask_r * 2) * 2
+    canvas_size = max( img_h, img_w )
     # 4802
     moon_signal_mask_size = canvas_size - moon_mask_r * 2
     moon_signal_mask_r = moon_signal_mask_size // 2
