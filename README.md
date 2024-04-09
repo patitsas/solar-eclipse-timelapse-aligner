@@ -117,7 +117,7 @@ The contents of example0.json should be:
 >> cat example0.json
 {"ring.jpg": {"sun": [240, 180, 127]}}
 >> cat example1.json
-{"ex1.jpg": {"sun": [238, 153, 110]}, "ex2.jpg": {"sun": [251, 147, 110]}, "ex3.jpg": {"sun": [276, 132, 110]}, "ex4.jpg": {"sun": [284, 140, 110]}, "ex6.jpg": {"sun": [189, 131, 110]}, "ex5.jpg": {"sun": [302, 144, 110]}, "ex7.jpg": {"sun": [208, 158, 110]}, "ex8.jpg": {"sun": [206, 155, 110]}}
+{"ex1.jpg": {"sun": [238, 153, 110]}, "ex2.jpg": {"sun": [251, 147, 110]}, "ex3.jpg": {"sun": [276, 132, 110]}, "ex4.jpg": {"sun": [284, 140, 110]}, "ex5.jpg": {"sun": [302, 144, 110]}, "ex6.jpg": {"sun": [189, 131, 110]}}
 ```
 
 # High level workflow
