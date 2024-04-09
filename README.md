@@ -105,8 +105,9 @@ pip install -r requirements.txt
 python eclipse-aligner.py
 # Print the full help message
 python eclipse-aligner.py -h
-# Example input
-python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg 
+# Examples of input
+python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg
+python eclipse-aligner.py --input=example1/ --sun_radius=110
 ```
 
 Common errors and what to do about them:
