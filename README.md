@@ -99,24 +99,20 @@ If you are comfortable working with the Python environment, you can clone the pr
 git clone https://github.com/hotdogee/solar-eclipse-timelapse-aligner.git
 # Change directory
 cd solar-eclipse-timelapse-aligner
-# Install required packages
+# Install required packages. If this command fails, open requirements.txt and install each one individually.
 pip install -r requirements.txt
 # Run the program, you should see a list of arguments and an error message for missing arguments: --input
 python eclipse-aligner.py
 # Print the full help message
 python eclipse-aligner.py -h
-# Examples of input
+# Optional: run these examples of input to confirm there are no errors (see below for information on workflow)
 python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg
 python eclipse-aligner.py --input=example1/ --sun_radius=110
 ```
 
-Common errors and what to do about them:
-1. Installing the requirements fails. Open requirements.txt and install each requirement individually.
-2. Sun radius is computed as 0 pixels. You have two options here: adjust the threshold for the sun, and/or calculate the radius yourself. It is probably easiest to do the latter. To calculate the radius, open up your example file in an image editor. Find the pixel coordinates of two ends of the diameter, and use them to calculate the diameter, and then radius.
-
-
 # High level workflow
 
+0. (Optional) Test the program with the provided examples. There are three sets of examples provided: example0, example1, and example2.
 1. (Optional) Test the program with the example images to learn what results you should expect.
 2. (Recommended) Pick a couple images (3 to 10) representative of the different stages of the eclipse, and process them with the program to quickly find a set of parameters that work well with all of the representative images.
 3. Use the same parameters found in step 2 to process the full image set, if the results are not perfect, use the images that had incorrect detection to fine tune the parameters.
@@ -155,9 +151,12 @@ This program currently only has a command line interface.
     ![Output Directories](docs/output-directories.jpg)
     ![Sun Results](docs/sun-results.jpg)
 
-4. Check the resulting centered images inside the `-output` directory. The directory will created along side the `--input` directory, for example, if your input directory is `./jpg`, the `-output` directory will be at `./jpg-output`.
+4. If you get an error that the sun radius is computed as 0 pixels, you have two options: adjust the threshold for the sun, and/or calculate the radius yourself. It is probably easiest to do the latter. To calculate the radius, open up your example file in an image editor. Find the pixel coordinates of two ends of the diameter, and use them to calculate the diameter, and then radius.
 
-5. If the results are not perfect, fine-tuning a few parameters may fix the problem. Start the fine-tuning process by viewing the images inside the `-circled` directory. The red circle represents the detected sun location, if the circles are off, follow the steps for `Fine-tuning the sun detection` below.
+5. Check the resulting centered images inside the `-output` directory. The directory will created along side the `--input` directory, for example, if your input directory is `./jpg`, the `-output` directory will be at `./jpg-output`.
+
+6. If the results are not perfect, fine-tuning a few parameters may fix the problem. Start the fine-tuning process by viewing the images inside the `-circled` directory. The red circle represents the detected sun location, if the circles are off, follow the steps for `Fine-tuning the sun detection` below.
+
 
 ## Enable the clipped sun filter
 
