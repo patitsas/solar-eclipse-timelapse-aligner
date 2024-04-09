@@ -107,8 +107,17 @@ python eclipse-aligner.py
 # Print the full help message
 python eclipse-aligner.py -h
 # Optional: run these examples of input to confirm there are no errors (see below for information on workflow)
-python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg
-python eclipse-aligner.py --input=example1/ --sun_radius=110
+python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg --circles=example0.json
+python eclipse-aligner.py --input=example1/ --sun_radius=110 --circles=example1.json
+```
+The two commands to check the program is functioning will ask you if it can save the detection location information to example0.json and example1.json respectively; enter yes.
+
+The contents of example0.json should be:
+```
+>> cat example0.json
+{"cresc.jpg": {"sun": [325, 171, 127]}, "ring.jpg": {"sun": [240, 180, 127]}}
+>> cat example1.json
+{"ex1.jpg": {"sun": [238, 153, 110]}, "ex2.jpg": {"sun": [251, 147, 110]}, "ex3.jpg": {"sun": [276, 132, 110]}, "ex4.jpg": {"sun": [284, 140, 110]}, "ex6.jpg": {"sun": [189, 131, 110]}, "ex5.jpg": {"sun": [302, 144, 110]}, "ex7.jpg": {"sun": [208, 158, 110]}, "ex8.jpg": {"sun": [206, 155, 110]}}
 ```
 
 # High level workflow
