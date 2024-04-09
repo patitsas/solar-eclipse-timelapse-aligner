@@ -107,6 +107,10 @@ python eclipse-aligner.py
 python eclipse-aligner.py -h
 ```
 
+Common errors and what to do about them:
+1. Sun radius is computed as 0 pixels. You have two options here: adjust the threshold for the sun, and/or calculate the radius yourself. It is probably easiest to do the latter. To calculate the radius, open up your example file in an image editor. Find the pixel coordinates of two ends of the diameter, and use them to calculate the diameter, and then radius.
+
+
 
 # Example input images
 
