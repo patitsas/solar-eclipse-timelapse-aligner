@@ -105,16 +105,13 @@ pip install -r requirements.txt
 python eclipse-aligner.py
 # Print the full help message
 python eclipse-aligner.py -h
+# Example input
+python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg 
 ```
 
 Common errors and what to do about them:
-1. Sun radius is computed as 0 pixels. You have two options here: adjust the threshold for the sun, and/or calculate the radius yourself. It is probably easiest to do the latter. To calculate the radius, open up your example file in an image editor. Find the pixel coordinates of two ends of the diameter, and use them to calculate the diameter, and then radius.
-
-
-
-# Example input images
-
-Download the example input images here: https://drive.google.com/file/d/10VEHLhs8JEQbKvKjmRGHTbSi0DoADwVS/view?usp=sharing
+1. Installing the requirements fails. Open requirements.txt and install each requirement individually.
+2. Sun radius is computed as 0 pixels. You have two options here: adjust the threshold for the sun, and/or calculate the radius yourself. It is probably easiest to do the latter. To calculate the radius, open up your example file in an image editor. Find the pixel coordinates of two ends of the diameter, and use them to calculate the diameter, and then radius.
 
 
 # High level workflow
