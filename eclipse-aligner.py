@@ -382,6 +382,9 @@ if __name__ == '__main__':
         _, _, stats, _ = cv2.connectedComponentsWithStats(sun_binary)
         sun_mask_r = int(max(stats[1][2:4]) // 2)
         click.secho(f'INFO: Detected SUN RADIUS: {sun_mask_r}')
+        if sun_mask_r == 0:
+            click.secho(f'ERROR: Unable to compute sun radius from input image. Try adjusting --sun_threshold or calculating it manually and entering the manual calculation with --sun-radius', fg='red')            
+            sys.exit(1) 
     else:
         # print error message
         click.secho(f'ERROR: Please provide either --sun or --sun_radius', fg='red')
