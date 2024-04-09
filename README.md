@@ -41,8 +41,9 @@ Sun detection and sun centering works best if your images meet the following req
 2. Images need to have clean dark backgrounds.
 3. The sun needs to have clean edges when the program converts the image into black and white with a given threshold.
 4. The size (in pixels) of the sun in the images needs to be constant, this should be true unless you changed the focal length during the shooting session.
-5. The sun should be fully visible in all images, in other words, it should not be partially cut off at the edges. This program has a clipped sun filter, when enabled, will filter out images with edge pixels over a certain brightness level.
-6. (Optional) For the auto sun radius detect feature, a photo of the sun where the sun is clear of clouds and mostly or completely un-eclipsed is used, this is usually the first or last clear photo in the shooting session, a full sun with no clouds works best. 
+5. The radius (in pixels) of the sun needs to be greater than 50. If your photos have the sun smaller than this, you'll need to batch resize them.
+6. The sun should be fully visible in all images, in other words, it should not be partially cut off at the edges. This program has a clipped sun filter, when enabled, will filter out images with edge pixels over a certain brightness level.
+7. (Optional) For the auto sun radius detect feature, a photo of the sun where the sun is clear of clouds and mostly or completely un-eclipsed is used, this is usually the first or last clear photo in the shooting session, a full sun with no clouds works best. 
 
 Moon detection and moon angle stabilization currently only works if your images meet the following additional requirements:
 
