@@ -26,7 +26,10 @@ GREEN = (0, 255, 0)
 
 
 
-
+##############################################################
+######### STAGE 1: input some calibration photos
+######### figure out threshold and radius for sun
+##############################################################
 
 def get_sun_radius(sun_path, sun_threshold):
     '''(str) -> int
@@ -280,14 +283,19 @@ def whether_calculate_stage1(data, sun_list):
     return False
         
         
-def stage_1(sun_list, tolerance = 2):
+def stage_1(sun_list, tolerance = 2, force_recalculation = False):
     '''(list of str, int)
     Given a list of images for calibration, use these images to determine
     a sun radius and sun threshold that work for all of these images.
     Output pictures to a stage1 directory showing red circles for the sun 
     radius for you to manually confirm these work.
     If you get an error, you probably need to increase the tolerance.
-    
+    If desired, you can manually edit the json files.
+
+    >>> stage_1(['example0/ring.jpg'], 2, True)    
+    JSON file found at example0-stage1/stage1n1t2.json
+    No JSON file for stage 1 found. Computing and saving one.
+    Drawing to example0-stage1/ring.jpg;  radius: 126; centre: (239,180)
     >>> stage_1(['example0/ring.jpg'], 2)    
     JSON file found at example0-stage1/stage1n1t2.json
     Drawing to example0-stage1/ring.jpg;  radius: 126; centre: (239,180)
@@ -322,16 +330,9 @@ def stage_1(sun_list, tolerance = 2):
     calculating = True
     json_filename = get_directory(sun_list[0]).replace('/', '-' + stage + '/') + stage + 'n' + str(len(sun_list)) + 't' + str(tolerance) + '.json'
     
-    data = {}
-    if os.path.exists(get_directory(json_filename)):        
-        if os.path.isfile(json_filename):
-            print('JSON file found at', json_filename)
-            with open(json_filename, 'r') as f:
-                data = json.load(f)
-    else:
-        os.makedirs(get_directory(json_filename))
+    data = open_and_load(json_filename)
 
-    calculating = whether_calculate_stage1(data, sun_list)
+    calculating = whether_calculate_stage1(data, sun_list) or force_recalculation
     if calculating:
         print('No JSON file for stage 1 found. Computing and saving one.')
         # first calculate a radius for each sun picture, and average them
@@ -360,24 +361,168 @@ def stage_1(sun_list, tolerance = 2):
 
 
 
-def get_amount_of_sun(fname, params, img):
+##############################################################
+######### STAGE 2: 
+##############################################################
+
+def is_image_file(fname):
+    '''
+    Is this a jpg?
+    >>> is_image_file('image.JPG')
+    True
+    >>> is_image_file('image.jpg')
+    True
+    >>> is_image_file('image.json')
+    False
+    '''
+    return fname.endswith('.JPG') or fname.endswith('.jpg')
+
+
+def open_and_load(json_filename):
+    '''
+    Attempt to open json_filename. If the path doesn't exist, create
+    the directory. If the file exists, load and return it.
+    If the file doesn't exist, return empty dictionary.
+    >>> open_and_load('example0-stage1/shouldnotexist.json')
+    {}
+    >>> open_and_load('example0-stage2/stage2.json')
+    JSON file found at example0-stage2/stage2.json
+    {'example0/ring.jpg': {'sun_radius': 126, 'sun_x': 239, 'sun_y': 180, 'sun_threshold': 15}}
+    '''
+    if os.path.exists(get_directory(json_filename)):        
+        if os.path.isfile(json_filename):
+            print('JSON file found at', json_filename)
+            with open(json_filename, 'r') as f:
+                data = json.load(f)
+            return data
+    else:
+        os.makedirs(get_directory(json_filename))
+    return {}        
+
+
+def stage_2(directory, sun_threshold, sun_radius, force_recalculation = False):
+    '''
+    Now that we have figured out a radius and threshold from stage1,
+    Calculate (and draw) sun location for every file, and save this to
+    a JSON file in thte stage2 directory.
+    You can manually edit this JSON file and rerun this code to visualize
+    your changes to the JSON file.
+
+    >>> stage_2('example0/', 15, 126, True)
+    JSON file found at example0-stage2/stage2.json
+    JSON file for stage 2 not found, calculating and saving to  example0-stage2/stage2.json
+    Drawing to example0-stage2/ring.jpg;  radius: 126; centre: (239,180)
+    >>> stage_2('example0/', 15, 126)
+    JSON file found at example0-stage2/stage2.json
+    Drawing to example0-stage2/ring.jpg;  radius: 126; centre: (239,180)
+    >>> stage_2('example1/', 35, 110)
+    JSON file found at example1-stage2/stage2.json
+    Drawing to example1-stage2/ex1.jpg;  radius: 110; centre: (238,153)
+    Drawing to example1-stage2/ex2.jpg;  radius: 110; centre: (252,143)
+    Drawing to example1-stage2/ex3.jpg;  radius: 110; centre: (276,132)
+    Drawing to example1-stage2/ex4.jpg;  radius: 110; centre: (284,140)
+    Drawing to example1-stage2/ex5.jpg;  radius: 110; centre: (302,144)
+    Drawing to example1-stage2/ex6.jpg;  radius: 110; centre: (187,130)
+    >>> stage_2('example2/', 70, 141)
+    JSON file found at example2-stage2/stage2.json
+    Drawing to example2-stage2/DSC05686.jpg;  radius: 141; centre: (713,1098)
+    Drawing to example2-stage2/DSC05688.jpg;  radius: 141; centre: (1382,1165)
+    Drawing to example2-stage2/DSC05690.jpg;  radius: 141; centre: (1568,1356)
+    Drawing to example2-stage2/DSC05702.jpg;  radius: 141; centre: (477,1538)
+    Drawing to example2-stage2/DSC05703.jpg;  radius: 141; centre: (544,1549)
+    Drawing to example2-stage2/DSC05704.jpg;  radius: 141; centre: (653,919)
+    Drawing to example2-stage2/DSC05709.jpg;  radius: 141; centre: (1174,1239)
+    '''
+    
+    # where we save results of this function
+    stage = 'stage2'
+    json_filename = make_json_filename(directory, stage) + stage + '.json'
+    data = open_and_load(json_filename)
+    
+    files = os.listdir(directory)
+    paths = []
+    for fname in sorted(files):
+        if is_image_file(fname):
+            paths.append( directory + fname )
+
+    if data:
+        to_calculate = whether_calculate_stage1(data, paths)
+    if not data or to_calculate or force_recalculation:
+        print('JSON file for stage 2 not found, calculating and saving to ', json_filename)
+        
+        # make sure this directory exists as get_centre_of_sun will try to write to it
+        bw_directory = directory.replace('/', '-sun-binary/')
+        if not os.path.exists(bw_directory):
+            os.makedirs(bw_directory)
+
+        # find the sun in every file and save it to data
+        for image_path in paths:
+            sun_x, sun_y = get_centre_of_sun(image_path, sun_threshold, sun_radius)
+            data[image_path] = {'sun_radius': sun_radius, 'sun_x': sun_x, 'sun_y': sun_y, 'sun_threshold': sun_threshold}
+
+        # saving for later
+        with open(json_filename, 'w') as g:
+            json.dump(data, g)
+
+    # visualize the data to make it easy to check
+    # we want to repaint these pictures in case you want to manually adjust the json file
+    for sun_path in data:
+        img = cv2.imread(sun_path, cv2.IMREAD_COLOR)
+        output_encircled(img, sun_path, data[sun_path]['sun_radius'], data[sun_path]['sun_x'], data[sun_path]['sun_y'], dirname=stage)
+
+
+
+
+##############################################################
+######### STAGE 3: Correct and refine stage 2
+##############################################################
+
+
+def get_amount_of_sun(fname):
     '''str, dict, CV2 -> float
-    How much of the black and white version of img is white?'''
-    
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # otsu
-    # _, img_binary = cv2.threshold(img_gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    _, img_binary = cv2.threshold(img_gray, params['sun_threshold'], 255, cv2.THRESH_BINARY)
-    # save sun_binary
-    cv2.imwrite(params['path'] + params['input_dir'].replace('/', '-sun-binary/') + fname, img_binary)
-    
-    # for figuring out percentage of coverage
-    all_ones = np.ones(img.shape)
-    
-    return np.sum(img_binary) / np.sum(all_ones)
+    How much of the black and white version of img is white?
+    >>> get_amount_of_sun('example0-sun-binary/ring.jpg')
+    4.202748842592593
+    >>> get_amount_of_sun('example1-sun-binary/ring.jpg')
+    Error example1-sun-binary/ring.jpg not found
+    >>> get_amount_of_sun('example1-sun-binary/ex1.jpg')
+    26.712632519723865
+    >>> get_amount_of_sun('example1-sun-binary/ex2.jpg')
+    9.622496012759171
+    >>> get_amount_of_sun('example1-sun-binary/ex3.jpg')
+    3.961301139147477
+    '''
+    if os.path.exists(fname): 
+        img_bw = cv2.imread(fname, cv2.COLOR_BGR2GRAY)
+        # for figuring out percentage of coverage
+        all_ones = np.ones(img_bw.shape)
+        
+        return np.sum(img_bw) / np.sum(all_ones)
+    else:
+        print('Error', fname, 'not found')
 
 
-
+def stage_3(directory, force_recalculation = False):
+    print()
+    '''    
+    >>> stage_3('example2/')
+    '''
+    stage = 'stage3'
+    json_filename = make_json_filename(directory, stage) + stage + '.json'
+    data = open_and_load(json_filename)
+    
+    json_s2 = make_json_filename(directory, 'stage2') + 'stage2.json'
+    s2_data = open_and_load(json_s2)
+    print(s2_data)
+    for image_path in sorted(s2_data):
+        print(image_path, get_amount_of_sun(image_path))
+    
+    # TODO for example 3 the circle stops aligning nicely before totality    
+    
+    
+##############################################################
+######### STAGE 4?
+##############################################################
 
 
 
@@ -450,7 +595,80 @@ def get_centre_of_moon(fname, params, img):
     return original_moon_x, original_moon_y
 
 
+##############################################################
+######### STAGE 5: output centred pictures
+##############################################################
 
+def output_image(jpg_path, sun_x, sun_y, sun_mask_r):
+    '''
+    Given the x and y of the centre of the sun in jpg_path, and the
+    radius of the sun (sun_mask_r), centre the image.
+    
+    >>> output_image('example0/ring.jpg', 239, 180, 126)
+    Moved the sun in example0/ring.jpg by (1,0)
+    >>> output_image('example1/ex1.jpg', 238, 153, 110)
+    Moved the sun in example1/ex1.jpg by (-30,3)
+    >>> output_image("example2/DSC05686.jpg", 713, 1098, 141)
+    Moved the sun in example2/DSC05686.jpg by (223,226)
+    '''
+
+    if os.path.exists(jpg_path):
+        # read jpg
+        img = cv2.imread(jpg_path, cv2.IMREAD_COLOR)
+        img_h, img_w = img.shape[:2]
+        crop_w, crop_h = img_w, img_h
+        
+        # for output
+        jpg_output_path = jpg_path.replace('/', '-stage5/')
+        if not os.path.exists(get_directory(jpg_output_path)):        
+            os.makedirs(get_directory(jpg_output_path))
+    
+        # TODO moon size
+        moon_mask_r = sun_mask_r
+        canvas_size_original = (sun_mask_r + moon_mask_r * 2) * 2
+        canvas_size_alternate = max( img_h, img_w )
+        canvas_size = max(canvas_size_alternate, canvas_size_original)
+
+        # pad image to canvas_size
+        pad_x, pad_y = (canvas_size - img_w) // 2, (canvas_size - img_h) // 2
+        padded = np.pad(img, ((pad_y, pad_y), (pad_x, pad_x), (0, 0)))
+        
+        # calculate the distance between the center of the sun and the center of the image
+        center_x, center_y = img_w // 2, img_h // 2
+        canvas = np.zeros((canvas_size, canvas_size, img.shape[2]), dtype=np.uint8)
+        canvas_h, canvas_w = canvas.shape[:2]
+        dx, dy = center_x - sun_x, center_y - sun_y
+        print('Moved the sun in ', jpg_path, ' by (', dx, ',', dy, ')', sep='')
+        
+        # draw sun at the center of the canvas
+        left, right = (0, dx) if dx > 0 else (-dx, 0)
+        up, down = (0, dy) if dy > 0 else (-dy, 0)
+        pad_h, pad_w = padded.shape[:2]
+        canvas[down:(pad_h - up), right:(pad_w - left), :] = padded[up:(pad_h - down), left:(pad_w - right), :]
+
+        # crop to original size
+        crop_x, crop_y = (canvas_w - crop_w) // 2, (canvas_h - crop_h) // 2
+        cropped = canvas[crop_y:crop_y + crop_h, crop_x:crop_x + crop_w]
+        # save cropped
+        cv2.imwrite(jpg_output_path, cropped)
+
+    else:
+        print('Error, could not find', jpg_path)
+
+
+def stage_5(directory):
+    '''
+    Given the files in directory "directory", centre them using the 
+    information from previous stages.
+    >>> stage_5('example2/')
+    '''
+
+    json_s2 = make_json_filename(directory, 'stage2') + 'stage2.json'
+    s2_data = open_and_load(json_s2)
+    print(s2_data)
+
+    for image_path in sorted(s2_data):
+        output_image(image_path, s2_data[image_path]['sun_x'], s2_data[image_path]['sun_y'], s2_data[image_path]['sun_radius'])
 
 
 if __name__ == '__main__':
