@@ -195,7 +195,7 @@ This program currently only has a command line interface.
 NOTE: Only works for total solar eclipse or annular solar eclipse, this part of the program assumes that the center of the moon pass through the center of the sun at the maximum point in your images.
 Use this feature if after viewing the results sun centering, you determine that the rotation of the sun also needs to be fixed.
 
-1. `--fix_angle` Set a value between `0` and `359` in degrees, check the image below of examples when this argument is set to `0`, `90`, `180`, and `270`.
+1. `--fix_angle` This parameter will rotate the outputted images by this angle. Set a value between `0` and `359` in degrees, check the image below of examples when this argument is set to `0`, `90`, `180`, and `270`.
    ![Angle Example](docs/doc-angle.jpg)
 
 3. `--moon_radius_mod` (MOON_RADIUS - SUN_RADIUS) in pixels, use a negative value if the moon is smaller than the sun (as is the case of annular solar eclipse). There is currently no auto-detect feature for the moon radius, use Photoshop or similar software to figure out how much larger or smaller in pixels is the moon when compared to the sun. For example, if the width of the moon is 2372, the moon radius would be 1186, and if the sun radius is 1210, set `--moon_radius_mod` to -24 (because 1186 - 1210 = -24).
@@ -268,7 +268,7 @@ optional arguments:
                         black and white, choose a value that gives clean edges
                         for best results. (default: 25)
   --fix_angle FIX_ANGLE
-                        Enables moon angle stabilization if given a non-
+                        Rotates the outputted images. Enables moon angle stabilization if given a non-
                         negative value in degrees, do not enable if processing
                         partial solar eclipse images. (default: -1)
   --moon_radius_mod MOON_RADIUS_MOD
