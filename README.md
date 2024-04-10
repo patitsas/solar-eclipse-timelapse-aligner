@@ -1,7 +1,7 @@
 # solar-eclipse-timelapse-aligner
 
 This specialized program is used to align and stabilize solar eclipse time-lapse photos.
-It was originally developed by Han Lin (@hotdogee) in to process images of the 2020/6/21 annular solar eclipse taken from a Nikon P950 at a 2 second interval.
+It was originally developed by Han Lin (@hotdogee) in to process images of the 2020-06-21 annular solar eclipse taken from a Nikon P950 at a 2 second interval.
 
 # About
 
@@ -41,7 +41,7 @@ Sun detection and sun centering works best if your images meet the following req
 3. The sun needs to have clean edges when the program converts the image into black and white with a given threshold.
 4. The size (in pixels) of the sun in the images needs to be constant, this should be true unless you changed the focal length during the shooting session.
 5. The radius (in pixels) of the sun needs to be greater than 50. If your photos have the sun smaller than this, you'll need to batch resize them.
-6. The sun should be fully visible in all images, in other words, it should not be partially cut off at the edges. This program has a clipped sun filter, when enabled, will filter out images with edge pixels over a certain brightness level.
+6. The sun should be fully visible in all images. In other words, it should not be partially cut off at the edges. This program has a clipped sun filter, when enabled, will filter out images with edge pixels over a certain brightness level.
 7. (Optional) For the auto sun radius detect feature, a photo of the sun where the sun is clear of clouds and mostly or completely un-eclipsed is used, this is usually the first or last clear photo in the shooting session, a full sun with no clouds works best. 
 
 Moon detection and moon angle stabilization currently only works if your images meet the following additional requirements:
@@ -73,7 +73,7 @@ python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg --circles=ex
 python eclipse-aligner.py --input=example1/ --sun_radius=110 --circles=example1.json
 python eclipse-aligner.py --input=example2/ --sun_radius=141 --sun_threshold=75 --circles=example2.json
 ```
-The two commands to check the program is functioning will ask you if it can save the detection location information to example0.json, example1.json, etc; enter yes. If everything is functioning smoothly, delete those files.
+The optional commands at the end are to check the program is functioning. It will ask you if it can save the detection location information to example0.json, example1.json, etc; enter yes. If everything is functioning smoothly, delete those files.
 
 If things are not running smoothly, check the contents of the json files. The filenames may appear in a different order and this is normal (Python dictionary). You want to check the numbers are the same for each filename.
 ```
@@ -230,9 +230,10 @@ optional arguments:
                         black and white, choose a value that gives clean edges
                         for best results. (default: 25)
   --fix_angle FIX_ANGLE
-                        Rotates the outputted images. Enables moon angle stabilization if given a non-
-                        negative value in degrees, do not enable if processing
-                        partial solar eclipse images. (default: -1)
+                        Rotates the outputted images. Enables moon angle
+                        stabilization if given a non-negative value in degrees,
+                        do not enable if processing partial solar eclipse images.
+                        (default: -1)
   --moon_radius_mod MOON_RADIUS_MOD
                         (MOON_RADIUS - SUN_RADIUS) in pixels, use a negative
                         value if the moon is smaller than the sun (as is the
