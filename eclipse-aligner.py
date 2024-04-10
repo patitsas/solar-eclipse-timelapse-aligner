@@ -232,7 +232,7 @@ if __name__ == '__main__':
         type=int,
         default=-1,
         help=
-        'Enables moon angle stabilization if given a non-negative value in degrees, do not enable if processing partial solar eclipse images. (default: %(default)s)'
+        'Rotates the outputted images. Enables moon angle stabilization if given a non-negative value in degrees, do not enable if processing partial solar eclipse images. (default: %(default)s)'
     )
     parser.add_argument(
         '--moon_radius_mod',
