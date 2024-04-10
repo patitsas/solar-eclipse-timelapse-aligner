@@ -59,7 +59,7 @@ This assumes you are familiar with Python. You can clone the project, pip instal
 ```bash
 # Install Python 3.7 on your OS, and optionally create and activate a new virtual environment
 # Clone this repo
-git clone https://github.com/hotdogee/solar-eclipse-timelapse-aligner.git
+git clone https://github.com/patitsas/solar-eclipse-timelapse-aligner.git
 # Change directory
 cd solar-eclipse-timelapse-aligner
 # Install required packages. If this command fails, open requirements.txt and install each one individually.
