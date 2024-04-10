@@ -109,15 +109,18 @@ python eclipse-aligner.py -h
 # Optional: run these examples of input to confirm there are no errors (see below for information on workflow)
 python eclipse-aligner.py --input=example0/ --sun=example0/ring.jpg --circles=example0.json
 python eclipse-aligner.py --input=example1/ --sun_radius=110 --circles=example1.json
+python eclipse-aligner.py --input=example2/ --sun_radius=141 --sun_threshold=75 --circles=example2.json
 ```
-The two commands to check the program is functioning will ask you if it can save the detection location information to example0.json and example1.json respectively; enter yes.
+The two commands to check the program is functioning will ask you if it can save the detection location information to example0.json, example1.json, etc; enter yes. If everything is functioning smoothly, delete those files.
 
-The contents of example0.json should be:
+If things are not running smoothly, check the contents of the json files. The filenames may appear in a different order and this is normal (Python dictionary). You want to check the numbers are the same for each filename.
 ```
 >> cat example0.json
 {"ring.jpg": {"sun": [240, 180, 127]}}
 >> cat example1.json
 {"ex1.jpg": {"sun": [238, 153, 110]}, "ex2.jpg": {"sun": [251, 147, 110]}, "ex3.jpg": {"sun": [276, 132, 110]}, "ex4.jpg": {"sun": [284, 140, 110]}, "ex5.jpg": {"sun": [302, 144, 110]}, "ex6.jpg": {"sun": [189, 131, 110]}}
+>> cat example2.json
+{"DSC05688.jpg": {"sun": [1382, 1166, 141]}, "DSC05690.jpg": {"sun": [1569, 1360, 141]}, "DSC05686.jpg": {"sun": [713, 1099, 141]}, "DSC05702.jpg": {"sun": [477, 1539, 141]}, "DSC05703.jpg": {"sun": [544, 1549, 141]}, "DSC05704.jpg": {"sun": [653, 919, 141]}, "DSC05712.jpg": {"sun": [1322, 1357, 141]}, "DSC05709.jpg": {"sun": [1174, 1239, 141]}, "DSC05717.jpg": {"sun": [927, 1451, 141]}, "DSC05722.jpg": {"sun": [1234, 1654, 141]}, "DSC05719.jpg": {"sun": [1032, 1516, 141]}, "DSC05724.jpg": {"sun": [1248, 1729, 141]}, "DSC05725.jpg": {"sun": [1103, 1740, 141]}, "DSC05728.jpg": {"sun": [1137, 1781, 141]}}
 ```
 
 # High level workflow
