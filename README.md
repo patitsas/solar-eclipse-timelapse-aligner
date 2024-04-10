@@ -1,12 +1,11 @@
 # solar-eclipse-timelapse-aligner
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hotdogee@gmail.com&lc=US&item_name=Solar+eclipse+timelapse+aligner+Development+Support&no_note=0&cn=&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted)
 
 This specialized program is used to align and stabilize solar eclipse time-lapse photos.
-It was originally developed to process images of the 2020/6/21 annular solar eclipse taken from a Nikon P950 at a 2 second interval.
+It was originally developed by Han Lin (@hotdogee) in to process images of the 2020/6/21 annular solar eclipse taken from a Nikon P950 at a 2 second interval.
 
 # About
 
-The eclipse images I took had a black background with no details and a smooth surface sun with also no high contrast features for general image stabilization methods to match across the images. This program detects the location of the sun in the input images and saves a new image in the output directory with the sun moved to the center of the image.
+The eclipse images that the original creator of this project took had a black background with no details and a smooth surface sun with also no high contrast features for general image stabilization methods to match across the images. This program detects the location of the sun in the input images and saves a new image in the output directory with the sun moved to the center of the image.
 
 Note: If your solar images were taken with a narrow band Ha filter, your images will likely have enough details for general stabilization methods to work.
 
@@ -53,46 +52,9 @@ Moon detection and moon angle stabilization currently only works if your images 
 
 # Installation
 
-## Option 1: Run the executable (Windows 64bit)
+## Run the Python source code (Windows, Mac, Linux)
 
-Download the compiled EXE from the releases page on github and run the program from the command line or powershell.
-
-### Step by step
-
-1. Download the latest version from the releases page: https://github.com/hotdogee/solar-eclipse-timelapse-aligner/releases/download/v1.0/solar-eclipse-timelapse-aligner-v1.0-windows-x64.zip
-
-2. Unzip the downloaded file, there should be a bat file named `start-cmd.bat` and a directory named `eclipse-aligner` with the exe `eclipse-aligner.exe` and a bunch of other files required by the exe inside.
-   * NOTE: The exe needs to be located together with the other files inside the `eclipse-aligner` directory to work, if you want to move the exe to a different location, you need to move the whole directory.
-
-3. Open Command Prompt or Powershell and navigate to directory `eclipse-aligner` inside the unzipped files.
-   * TIP: For your convenience, you can also double click on the `start-cmd.bat` to open up Command Prompt and drop you inside the `eclipse-aligner` directory, instead of doing it manually.
-
-4. Run the program to print a list of arguments by typing `eclipse-aligner.exe` and pressing `ENTER`, you should see the following output (the error message is normal):
-    ```
-    usage: eclipse-aligner [-h] [-v] --input INPUT [--sun SUN]
-                        [--sun_radius SUN_RADIUS]
-                        [--sun_threshold SUN_THRESHOLD] [--fix_angle FIX_ANGLE]
-                        [--moon_radius_mod MOON_RADIUS_MOD]
-                        [--moon_threshold_mod MOON_THRESHOLD_MOD]
-                        [--max_phase_rotation_group_threshold THRESHOLD]
-                        [--min_phase_rotation_group_threshold THRESHOLD]
-                        [--filter] [--clipped_cutoff CLIPPED_CUTOFF]
-                        [--empty_cutoff EMPTY_CUTOFF] [--workers WORKERS]
-                        [--output_suffix OUTPUT_SUFFIX]
-                        [--clipped_suffix CLIPPED_SUFFIX]
-                        [--circled_suffix CIRCLED_SUFFIX]
-                        [--sun_binary_suffix SUN_BINARY_SUFFIX]
-                        [--moon_binary_suffix MOON_BINARY_SUFFIX]
-                        [--circles CIRCLES]
-    eclipse-aligner: error: the following arguments are required: --input
-    ```
-    NOTE: if you are using Powershell instead of the Command Prompt, you should add `.\` in front of the exe like this: `.\eclipse-aligner.exe` to run the program.
-
-6. Run `eclipse-aligner.exe -h` to print the full help.
-
-## Option 2: Run the Python source code (Windows, Mac, Linux)
-
-If you are comfortable working with the Python environment, you can clone the project, pip install the requirements, and directly run the source code.
+This assumes you are familiar with Python. You can clone the project, pip install the requirements, and directly run the source code.
 
 ```bash
 # Install Python 3.7 on your OS, and optionally create and activate a new virtual environment
@@ -355,7 +317,4 @@ optional arguments:
   
 
 # Donations
-
-If this project has helped you save some time, you can give me a cup of coffee :)
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)]([YOUR_EMAIL_CODE](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hotdogee@gmail.com&lc=US&item_name=Solar+eclipse+timelapse+aligner+Development+Support&no_note=0&cn=&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted))
+The original creator of this code has a paypal here: [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)]([YOUR_EMAIL_CODE](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hotdogee@gmail.com&lc=US&item_name=Solar+eclipse+timelapse+aligner+Development+Support&no_note=0&cn=&currency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted))
